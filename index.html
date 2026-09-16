@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cauchos Caracas | Catálogo & Servicios</title>
 
-    <!-- FAVICON (editable desde admin -> Ajustes). Tiene id para poder cambiar dinámicamente -->
     <link id="site-favicon" rel="icon" href="https://via.placeholder.com/32">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -64,7 +63,6 @@
             animation: pulse-soft 2s infinite;
         }
 
-        /* NUEVAS CLASES - Presentación de imágenes principales y mini thumbnails */
         .primary-photo-wrapper {
             display: flex;
             align-items: center;
@@ -72,7 +70,7 @@
             background: linear-gradient(135deg, rgba(2,132,199,0.12), rgba(245,158,11,0.08));
             border-radius: 0;
             width: 100%;
-            height: 12rem; /* mantiene una altura cómoda, se ajusta con clases responsive en markup */
+            height: 12rem;
             padding: 1rem;
             position: relative;
             overflow: hidden;
@@ -85,9 +83,8 @@
             transition: transform 0.35s ease;
             filter: drop-shadow(0 8px 18px rgba(2,132,199,0.12));
             will-change: transform;
-            z-index: 5; /* aseguramos que la imagen esté por debajo de badges z-index más alto */
+            z-index: 5;
         }
-        /* pequeñas miniaturas estáticas que usan la propia imagen como background */
         .static-thumb {
             width: 44px;
             height: 44px;
@@ -98,7 +95,7 @@
             background-position: center;
             background-repeat: no-repeat;
             cursor: pointer;
-            z-index: 10; /* menor que la oferta que será z-50 */
+            z-index: 10;
         }
         .thumb-stack {
             position: absolute;
@@ -109,14 +106,11 @@
             z-index: 10;
         }
 
-        /* Modal - interacciones de zoom */
         #zoom-container { cursor: zoom-in; position: relative; overflow: hidden; touch-action: none; }
         #modal-main-img { transition: transform 0.2s ease, filter 0.2s ease, opacity 0.25s ease; transform-origin: center center; will-change: transform, opacity; z-index: 5; }
         #modal-main-img.zoomed { cursor: move; will-change: transform; }
-        /* al hacer zoom exagera la sombra para destacar */
         #modal-main-img.zoomed { filter: drop-shadow(0 20px 45px rgba(2,132,199,0.18)); }
 
-        /* Miniaturas (dots) en modal */
         #modal-gallery-dots button {
             border-radius: 0.5rem;
             width: 2.5rem;
@@ -132,55 +126,280 @@
             border-color: white;
         }
 
-        /* admin trabajo thumbnails */
         .admin-trab-thumb { width: 72px; height: 72px; border-radius: 8px; overflow: hidden; background-size: cover; background-position: center; position: relative; }
         .admin-trab-thumb .del-btn { position: absolute; top: 6px; right: 6px; background: rgba(255,255,255,0.9); border-radius: 50%; width: 20px; height: 20px; display:flex; align-items:center; justify-content:center; font-size:12px; cursor:pointer; }
 
-        /* Brands carousel */
-        #brands-carousel { display:flex; gap:24px; align-items:center; justify-content:center; flex-wrap:nowrap; overflow:hidden; }
-        /* Aumenté el tamaño de los slides para que los logos se vean más grandes */
+        #brands-carousel { display:flex; gap:24px; align-items:center; justify-content:center; flex-wrap:nowrap; overflow:hidden; position:relative; }
+        .brand-track {
+            display:flex;
+            align-items:center;
+            gap:24px;
+            width:max-content;
+            animation: brand-marquee 28s linear infinite;
+            will-change: transform;
+        }
         .brand-slide { width: 150px; height: 80px; display:flex; align-items:center; justify-content:center; opacity:0.95; transition: transform .6s ease, opacity .4s; flex-shrink:0; }
         .brand-slide img { max-width: 100%; max-height: 100%; object-fit:contain; filter: drop-shadow(0 6px 16px rgba(2,132,199,0.06)); }
 
-        /* Visítanos section identificable */
+        @keyframes brand-marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
         #visitanos-section { background-size: cover; background-position: center; }
 
-        /* Timeline backgrounds: items get a .timeline-bg class applied by JS with inline style */
-
-        /* Ensure oferta badge stays on top of images */
         .oferta-badge { z-index: 50 !important; position: absolute !important; top: 0.75rem !important; right: 0.75rem !important; }
 
-        /* Make product cards taller on mobile for better visibility */
         @media (max-width: 640px) {
-            .product-image-mobile-large { height: 18rem !important; } /* for image container on mobile */
+            .product-image-mobile-large { height: 18rem !important; }
             .liquid-glass-card { font-size: 1rem; }
         }
 
-        /* For timeline responsiveness */
         @media (max-width: 768px) {
             .primary-photo-wrapper { height: 10rem; padding: .75rem; }
             #modal-main-img { max-height: 60vh; object-fit: contain; }
         }
 
-        /* Very small tax note styling (subtle, low opacity) */
         #tax-note { font-size: 10px; color: rgba(100,100,110,0.35); margin-top: 6px; }
+
+        .logo-menu-wrapper {
+            position: relative;
+        }
+
+        .logo-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            left: 0;
+            width: 270px;
+            max-height: 75vh;
+            overflow-y: auto;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 18px;
+            box-shadow: 0 18px 45px rgba(15,23,42,0.22);
+            padding: 10px;
+            z-index: 200;
+        }
+
+        .logo-menu.hidden {
+            display: none;
+        }
+
+        .logo-menu a,
+        .logo-menu button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            color: #334155;
+            font-size: 13px;
+            font-weight: 800;
+            text-align: left;
+            transition: all .2s ease;
+        }
+
+        .logo-menu a:hover,
+        .logo-menu button:hover {
+            background: #e0effe;
+            color: #0c4a6e;
+        }
+
+        .logo-menu .menu-category-title {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            padding: 8px 12px 4px;
+        }
+
+        .logo-menu .menu-advice {
+            background: #10b981;
+            color: white;
+            margin-top: 6px;
+            box-shadow: 0 8px 18px rgba(16,185,129,.25);
+        }
+
+        .logo-menu .menu-advice:hover {
+            background: #059669;
+            color: white;
+        }
+
+        .catalog-category-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 18px;
+            justify-content: center;
+        }
+
+        .catalog-category-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.8);
+            border: 1px solid rgba(255,255,255,.9);
+            color: #475569;
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 0 5px 15px rgba(15,23,42,.06);
+            transition: all .2s ease;
+        }
+
+        .catalog-category-btn:hover,
+        .catalog-category-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #0284c7;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(2,132,199,.22);
+        }
+
+        .product-card-gallery-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,.92);
+            color: #0c4a6e;
+            box-shadow: 0 6px 16px rgba(15,23,42,.18);
+            z-index: 20;
+            opacity: 0;
+            transition: all .2s ease;
+        }
+
+        .product-image-gallery:hover .product-card-gallery-arrow,
+        .product-card-gallery-arrow:focus {
+            opacity: 1;
+        }
+
+        .product-card-gallery-arrow:hover {
+            background: #0284c7;
+            color: white;
+        }
+
+        .product-card-gallery-arrow.left {
+            left: 10px;
+        }
+
+        .product-card-gallery-arrow.right {
+            right: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .logo-menu {
+                left: -8px;
+                width: 250px;
+            }
+
+            .product-card-gallery-arrow {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-accent selection:text-white relative bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]">
 
     <nav class="glass-effect sticky top-0 z-40 px-4 md:px-8 py-3.5 flex justify-between items-center shadow-sm">
-        <div class="flex items-center gap-3">
-            <!-- LOGO EDITABLE: elemento con id="site-logo" para que lo puedas cambiar fácilmente.
-                 Puedes actualizar su src desde el Admin -> Ajustes (campo 'Logo del Sitio'). -->
-            <div class="bg-brand-900 text-brand-accent p-2.5 rounded-xl shadow-md shadow-brand-900/10 flex items-center">
-                <img id="site-logo" src="logito.png" alt="Logo Cauchos Caracas" class="w-10 h-10 object-cover rounded-md" />
-            </div>
-            <div>
-                <span class="text-xl font-extrabold text-slate-900 tracking-tight block leading-none">CAUCHOS<span class="text-brand-600">CARACAS</span></span>
-                <span class="text-[10px] text-slate-500 font-bold tracking-wider uppercase">Frenos & Cauchos</span>
+        <div class="logo-menu-wrapper">
+            <button
+                type="button"
+                onclick="window.toggleLogoMenu(event)"
+                aria-label="Abrir menú principal"
+                aria-expanded="false"
+                class="flex items-center gap-3 rounded-2xl p-1.5 pr-3 hover:bg-white/70 transition cursor-pointer"
+                title="Abrir menú de navegación"
+            >
+                <div class="bg-brand-900 text-brand-accent p-2.5 rounded-xl shadow-md shadow-brand-900/10 flex items-center relative">
+                    <img id="site-logo" src="logito.png" alt="Logo Cauchos Caracas" class="w-10 h-10 object-cover rounded-md" />
+
+                    <span class="absolute -bottom-1 -right-1 bg-brand-accent text-slate-900 w-5 h-5 rounded-full flex items-center justify-center text-[9px] shadow-md border-2 border-white">
+                        <i class="fa-solid fa-bars"></i>
+                    </span>
+                </div>
+
+                <div class="text-left">
+                    <span class="text-xl font-extrabold text-slate-900 tracking-tight block leading-none">
+                        CAUCHOS<span class="text-brand-600">CARACAS</span>
+                    </span>
+                    <span class="text-[10px] text-slate-500 font-bold tracking-wider uppercase">
+                        Frenos & Cauchos
+                    </span>
+                </div>
+            </button>
+
+            <div id="logo-site-menu" class="logo-menu hidden">
+                <div class="menu-category-title">Catálogo</div>
+
+                <a href="#catalogo-section" onclick="window.navigateFromMenu(event, 'catalogo-section')">
+                    <i class="fa-solid fa-star text-amber-500"></i>
+                    Destacados
+                </a>
+
+                <button type="button" onclick="window.navigateToCategory('cauchos')">
+                    <i class="fa-solid fa-circle text-slate-700"></i>
+                    Cauchos
+                </button>
+
+                <button type="button" onclick="window.navigateToCategory('frenos')">
+                    <i class="fa-solid fa-car-burst text-rose-500"></i>
+                    Frenos
+                </button>
+
+                <button type="button" onclick="window.navigateToCategory('servicios')">
+                    <i class="fa-solid fa-wrench text-brand-600"></i>
+                    Servicios
+                </button>
+
+                <div class="menu-category-title">Secciones</div>
+
+                <a href="#trabajos-section" onclick="window.navigateFromMenu(event, 'trabajos-section')">
+                    <i class="fa-solid fa-camera text-brand-600"></i>
+                    Trabajos realizados
+                </a>
+
+                <a href="#opiniones-section" onclick="window.navigateFromMenu(event, 'opiniones-section')">
+                    <i class="fa-solid fa-star text-amber-500"></i>
+                    Opiniones
+                </a>
+
+                <a href="#marcas-section" onclick="window.navigateFromMenu(event, 'marcas-section')">
+                    <i class="fa-solid fa-circle-nodes text-brand-600"></i>
+                    Marcas
+                </a>
+
+                <a href="#visitanos-section" onclick="window.navigateFromMenu(event, 'visitanos-section')">
+                    <i class="fa-solid fa-location-dot text-rose-500"></i>
+                    Visítanos
+                </a>
+
+                <a href="#sobre-nosotros-section" onclick="window.navigateFromMenu(event, 'sobre-nosotros-section')">
+                    <i class="fa-solid fa-clock-rotate-left text-brand-600"></i>
+                    Nuestra historia
+                </a>
+
+                <a
+                    href="https://wa.me/5804126444380?text=Hola%20Cauchos%20Caracas,%20deseo%20una%20asesor%C3%ADa"
+                    target="_blank"
+                    class="menu-advice"
+                    onclick="window.closeLogoMenu()"
+                >
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    Asesoría personalizada
+                </a>
             </div>
         </div>
-        
+
         <div class="flex items-center gap-3">
             <a href="https://wa.me/5804126444380?text=Hola%20Cauchos%20Caracas,%20deseo%20una%20cotizaci%C3%B3n" target="_blank" class="hidden md:flex px-4 py-2 text-xs font-bold text-slate-600 bg-white hover:bg-slate-50 hover:text-emerald-600 rounded-xl transition items-center gap-2 shadow-sm border border-slate-200">
                 <i class="fa-brands fa-whatsapp text-lg text-emerald-500"></i> <span>Asesoría Personalizada</span>
@@ -228,11 +447,53 @@
                 <p class="mt-3 text-xs font-semibold text-slate-500 tracking-wide">
                     Escribe tu vehículo, medida o referencia y presiona Enter o dale a buscar
                 </p>
+
+                <div class="catalog-category-menu" aria-label="Categorías de productos">
+                    <button
+                        type="button"
+                        class="catalog-category-btn active"
+                        data-category="todos"
+                        onclick="window.seleccionarCategoriaCatalogo('todos')"
+                    >
+                        <i class="fa-solid fa-layer-group"></i>
+                        Todos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="catalog-category-btn"
+                        data-category="cauchos"
+                        onclick="window.seleccionarCategoriaCatalogo('cauchos')"
+                    >
+                        <i class="fa-solid fa-circle"></i>
+                        Cauchos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="catalog-category-btn"
+                        data-category="frenos"
+                        onclick="window.seleccionarCategoriaCatalogo('frenos')"
+                    >
+                        <i class="fa-solid fa-car-burst"></i>
+                        Frenos
+                    </button>
+
+                    <button
+                        type="button"
+                        class="catalog-category-btn"
+                        data-category="servicios"
+                        onclick="window.seleccionarCategoriaCatalogo('servicios')"
+                    >
+                        <i class="fa-solid fa-wrench"></i>
+                        Servicios
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex-1 w-full z-20">
+    <main id="catalogo-section" class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex-1 w-full z-20">
         <div class="flex flex-col xl:flex-row justify-between items-start xl:items-end mb-8 gap-4">
             <div>
                 <h2 class="text-3xl font-black text-slate-900" id="catalogo-titulo">Destacados</h2>
@@ -247,7 +508,7 @@
         <div id="catalog-grid" class="w-full"></div>
     </main>
 
-    <section class="max-w-7xl mx-auto px-4 md:px-8 py-12 mb-12">
+    <section id="trabajos-section" class="max-w-7xl mx-auto px-4 md:px-8 py-12 mb-12">
         <div class="bg-slate-950 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden shadow-2xl shadow-slate-900/50 border border-slate-800">
             <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
                 <i class="fa-solid fa-gears text-9xl text-white"></i>
@@ -287,11 +548,11 @@
                 <p class="text-slate-500 text-sm font-medium">Nuestra experiencia reflejada en la calidad de nuestro servicio.</p>
             </div>
             <div id="galeria-trabajos-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                </div>
+            </div>
         </div>
     </section>
 
-    <section class="py-20 relative bg-cover bg-center bg-fixed" style="background-image: url('');">
+    <section id="opiniones-section" class="py-20 relative bg-cover bg-center bg-fixed" style="background-image: url('');">
         <div class="absolute inset-0 bg-slate-900/95 z-0"></div> <div class="max-w-7xl mx-auto px-4 md:px-8 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-4">
                 <h2 class="text-3xl font-black text-white text-center md:text-left">Lo que dicen <span class="text-brand-400">nuestros clientes</span></h2>
@@ -300,12 +561,11 @@
                 </button>
             </div>
             <div id="opiniones-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                </div>
+            </div>
         </div>
     </section>
 
-    <!-- BRANDS CAROUSEL (editable desde admin -> Marcas) -->
-    <section class="relative py-8 bg-white border-t border-b border-slate-200">
+    <section id="marcas-section" class="relative py-8 bg-white border-t border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="text-center mb-6">
                 <h3 class="text-xl font-black text-slate-900">Marcas con las que trabajamos</h3>
@@ -373,9 +633,6 @@
         </div>
     </section>
 
-    <!-- --------------------------------------------------------------------------
-         Modales (producto, opinion, user, admin...) - sin cambios estructurales
-         pero se adaptaron algunos textos y controles para 'cotizar' -->
     <div id="product-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[85] flex items-center justify-center p-2 md:p-6 opacity-0 transition-opacity duration-300">
         <div class="glass-effect w-full max-w-[1200px] h-[95vh] md:h-auto md:max-h-[85vh] rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden relative scale-95 transition-transform duration-300" id="product-modal-content">
             <button onclick="window.cerrarProducto()" class="absolute top-4 right-4 z-20 w-10 h-10 bg-white/80 backdrop-blur text-slate-800 rounded-full flex items-center justify-center font-bold text-xl hover:bg-rose-50 hover:text-rose-600 transition shadow-sm border border-slate-200">×</button>
@@ -498,7 +755,6 @@
                         <span class="text-3xl font-black text-brand-700">$<span id="cart-total">0.00</span></span>
                     </div>
 
-                    <!-- Tiny toggler to show/hide taxes (optional, subtle) -->
                     <div class="flex justify-between items-center mt-2">
                         <button id="toggle-taxes-btn" onclick="window.toggleTaxes()" class="text-xs text-slate-400 underline">Mostrar impuestos</button>
                         <div id="tax-note" class="text-[10px] text-slate-400 opacity-30">Precio no incluye IVA ni IGTF</div>
@@ -609,7 +865,6 @@
         </div>
     </div>
 
-    <!-- ADMIN MODAL EXTENDED: agregué pestañas para Marcas y Ajustes del sitio -->
     <div id="admin-modal" class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-lg z-[100] flex items-center justify-center p-2 md:p-6">
         <div class="bg-slate-50 w-full max-w-[1400px] h-[95vh] md:h-[90vh] rounded-[2rem] shadow-2xl flex flex-col md:flex-row overflow-hidden relative">
             
@@ -704,7 +959,6 @@
                                 <div class="flex items-center gap-4 mt-2">
                                     <label class="flex items-center gap-2 cursor-pointer text-sm font-bold text-slate-700"><input type="checkbox" id="admin-prod-oferta" class="w-4 h-4 text-brand-600"> En Oferta</label>
                                     <label class="flex items-center gap-2 cursor-pointer text-sm font-bold text-slate-700"><input type="checkbox" id="admin-prod-destacado" class="w-4 h-4 text-amber-500"> Destacado Principal</label>
-                                    <!-- Nueva opción: Cotizar (si se marca, mostrará 'Consultar precio' al cliente) -->
                                     <label class="flex items-center gap-2 cursor-pointer text-sm font-bold text-slate-700"><input type="checkbox" id="admin-prod-cotizar" class="w-4 h-4 text-slate-700"> Precio a Cotizar</label>
                                 </div>
                             </div>
@@ -773,7 +1027,6 @@
                             </table>
                         </div>
 
-                        <!-- Botón "Cargar más" para paginación -->
                         <div id="admin-load-more-wrap" class="flex justify-center mt-4 hidden">
                             <button id="admin-load-more" onclick="window.cargarInventarioAdminFirebase(false)" class="px-4 py-2 bg-indigo-100 text-indigo-700 rounded-xl font-bold hover:bg-indigo-200 transition"><i class="fa-solid fa-arrow-down mr-2"></i> Cargar más</button>
                         </div>
@@ -857,7 +1110,6 @@
                         </form>
                     </div>
 
-                    <!-- Lista de trabajos publicados (admin) -->
                     <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
                         <div class="flex justify-between items-center mb-4">
                             <h4 class="font-black text-slate-900">Trabajos publicados</h4>
@@ -876,10 +1128,9 @@
                         <p class="text-xs font-bold text-slate-500 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-slate-200">Aprobar para publicar en la web</p>
                     </div>
                     <div id="admin-opiniones-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        </div>
+                    </div>
                 </div>
 
-                <!-- ADMIN: MARCAS -->
                 <div id="admin-marcas" class="hidden space-y-6">
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
                         <div>
@@ -900,7 +1151,6 @@
                     </div>
                 </div>
 
-                <!-- ADMIN: AJUSTES DEL SITIO (logo, favicon, visitanos background, contacto, timeline backgrounds) -->
                 <div id="admin-ajustes" class="hidden space-y-6">
                     <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
                         <h3 class="text-xl font-black text-slate-900 mb-3">Ajustes del Sitio</h3>
@@ -949,13 +1199,11 @@
                     </div>
                 </div>
 
-                <!-- FIN ADMIN CONTENIDO -->
             </div>
         </div>
     </div>
     
     <footer class="bg-slate-900 text-slate-400 text-center py-6 text-sm font-bold mt-auto z-20 relative w-full border-t border-slate-800">
-        <!-- CONTACT INFO (editable desde Admin -> Ajustes) -->
         <div id="footer-contacts" class="mb-2 text-xs">
             número de contacto: <span id="footer-phone">x</span> &nbsp;|&nbsp;
             correo de contacto: <span id="footer-email">xxx</span> &nbsp;|&nbsp;
@@ -986,7 +1234,6 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // Estado global en memoria
         window.inventario = []; 
         window.carrito = [];
         window.pedidos = [];
@@ -1001,33 +1248,28 @@
         let productoActual = null;
         let indiceImagenActual = 0;
         let currentAdminTab = 'inventario';
-        let carruselInterval = null; // Variable global para el carrusel de trabajos
+        let carruselInterval = null;
 
-        // admin trabajo imágenes en edición
-        window.adminTrabajoImgs = []; // array temporal de urls cuando editas
+        window.adminTrabajoImgs = [];
+        window.categoriaCatalogoActiva = 'todos';
+        window.tarjetaImagenesActuales = {};
 
-        // Paginación admin
-        window.adminPageSize = 200; // ajustes: cuántos documentos por página
+        window.adminPageSize = 200;
         window.adminLastDoc = null;
-        window.adminFullLoaded = false; // indica si ya no hay más páginas
+        window.adminFullLoaded = false;
 
-        // Caché y control de listeners
-        window.fullInventoryLoaded = false; // evita pedir todo inventario repetidamente (para búsquedas públicas)
-        let pedidosUnsubscribe = null; // para controlar listener de pedidos (solo admin)
+        window.fullInventoryLoaded = false;
+        let pedidosUnsubscribe = null;
 
-        // Marcas
         window.marcas = [];
 
-        // Default siteConfig (usar imágenes locales por defecto)
         window.siteConfig = { logoUrl: 'logito.png', favicon: '', visitanosBg: 'ubicacion.png', footer: { phone: '', email: '', location: '' }, timelineBackgrounds: {} };
 
-        // Lista de logos locales (en la misma carpeta que este HTML). Dedupliqué 'brembo.png' si aparece dos veces.
         window.localDefaultMarcaFiles = [
             'cbk.png','firestone.png','blackeagle.png','goodyear.png','lanvigator.png','wagner.png',
             'alix.png','greentrac.png','xtender.png','sunbrake.png','americanblack.png','pgt.png',
             'brembo.png','michelin.png','pirelli.png','bfgoodrich.png','toyotires.png','levo.png','rallysport.png'
         ];
-        // Convertir a objetos con id/url
         window.localDefaultMarcas = window.localDefaultMarcaFiles.map((f, idx) => ({ id: 'local-' + idx + '-' + f.replace(/\.[^.]+$/, ''), url: f }));
 
         const observer = new IntersectionObserver((entries) => {
@@ -1050,7 +1292,6 @@
             return await getDownloadURL(storageRef);
         };
 
-        // ------------------ SITE CONFIG: cargar/guardar ------------------
         window.cargarSiteConfig = async () => {
             try {
                 const docSnap = await getDoc(doc(db, "config", "site"));
@@ -1058,7 +1299,6 @@
                     window.siteConfig = Object.assign({}, window.siteConfig, docSnap.data());
                     applySiteConfigToDOM();
                 } else {
-                    // No existe en Firestore: usar defaults locales e inyectar al DOM
                     applySiteConfigToDOM();
                 }
             } catch (e) {
@@ -1093,7 +1333,6 @@
                     footerLocation.textContent = window.siteConfig.footer.location || 'xxx';
                 }
 
-                // Timeline backgrounds: aplicar a elementos con data-year
                 const timelineItems = document.querySelectorAll('.timeline-item');
                 timelineItems.forEach(item => {
                     const year = item.getAttribute('data-year');
@@ -1145,7 +1384,6 @@
             }
         };
 
-        // Subir fondo timeline por año
         window.subirTimelineBg = async () => {
             const year = document.getElementById('site-timeline-year').value.trim();
             const file = document.getElementById('site-timeline-file').files[0];
@@ -1163,13 +1401,11 @@
             }
         };
 
-        // ------------------ MARCAS (brands) ------------------
         window.subirMarca = async (event) => {
             const file = event.target.files[0];
             if(!file) return;
             try {
                 const url = await window.subirArchivoAStorage(file, 'brands');
-                // crear documento con id automático
                 const id = Date.now().toString();
                 await setDoc(doc(db, "marcas", id), { id, url });
                 await window.cargarMarcas();
@@ -1185,11 +1421,9 @@
                 const snap = await getDocs(collection(db, "marcas"));
                 const arr = [];
                 snap.forEach(d => arr.push({ id: d.id, ...d.data() }));
-                // Si Firestore tiene logos, los usamos; si no, usamos la lista local por defecto
                 if (arr.length > 0) {
                     window.marcas = arr;
                 } else {
-                    // Asegurarnos de mapear a objetos con id/url
                     window.marcas = window.localDefaultMarcas;
                 }
                 renderBrandsCarousel();
@@ -1197,7 +1431,6 @@
                 renderBrandsCompact();
             } catch(e) {
                 console.error("cargarMarcas:", e);
-                // En caso de error con Firestore, usar locales
                 window.marcas = window.localDefaultMarcas;
                 renderBrandsCarousel();
                 renderAdminMarcasList();
@@ -1230,49 +1463,31 @@
             } catch(e) { alert("Error eliminando: " + e.message); }
         };
 
-        // Carrusel público de marcas (simple rotator)
         window.renderBrandsCarousel = () => {
             const carousel = document.getElementById('brands-carousel');
             if(!carousel) return;
-            carousel.innerHTML = '';
-            if(!window.marcas || window.marcas.length === 0) {
-                carousel.innerHTML = `<div class="text-slate-400">Sin marcas registradas.</div>`;
-                return;
-            }
-
-            // crear slides
-            const slides = window.marcas.map(m => {
-                const div = document.createElement('div');
-                div.className = 'brand-slide';
-                // Aceptar rutas relativas: si la url es local (no comienza con http), dejarla tal cual
-                const src = (m.url && (m.url.startsWith('http') || m.url.startsWith('/'))) ? m.url : m.url;
-                div.innerHTML = `<img src="${src}" alt="marca">`;
-                return div;
+            const marcas = window.marcas && window.marcas.length > 0 ? window.marcas : window.localDefaultMarcas;
+            const track = document.createElement('div');
+            track.className = 'brand-track';
+            const duplicated = [...marcas, ...marcas];
+            duplicated.forEach((m, idx) => {
+                const slide = document.createElement('div');
+                slide.className = 'brand-slide';
+                const src = m.url;
+                slide.innerHTML = `<img src="${src}" alt="marca" loading="lazy">`;
+                track.appendChild(slide);
             });
-
-            slides.forEach(s => carousel.appendChild(s));
-            // Animación lateral simple: mover el scrollLeft
-            let pos = 0;
-            if(window._brandInterval) clearInterval(window._brandInterval);
-            window._brandInterval = setInterval(() => {
-                pos += 2;
-                carousel.scrollLeft = pos;
-                // loop
-                if(pos > carousel.scrollWidth - carousel.clientWidth) {
-                    pos = 0;
-                    carousel.scrollLeft = 0;
-                }
-            }, 40);
+            carousel.innerHTML = '';
+            carousel.appendChild(track);
         };
 
-        // Compact brands (grid of logos)
         window.renderBrandsCompact = () => {
             const container = document.getElementById('brands-compact');
             if(!container) return;
             container.innerHTML = '';
             const marcas = window.marcas && window.marcas.length > 0 ? window.marcas : window.localDefaultMarcas;
             marcas.forEach(m => {
-                const src = (m.url && (m.url.startsWith('http') || m.url.startsWith('/'))) ? m.url : m.url;
+                const src = m.url;
                 const img = document.createElement('img');
                 img.src = src;
                 img.alt = 'marca';
@@ -1282,7 +1497,6 @@
             });
         };
 
-        // ------------------ INVENTARIO / CARGA INICIAL ------------------
         async function cargarInventario() {
             try {
                 const refInv = collection(db, "inventario");
@@ -1298,15 +1512,13 @@
                 snapS.forEach(docSnap => itemsMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() }));
                 
                 window.inventario = Array.from(itemsMap.values());
-                // No marcamos fullInventoryLoaded aquí: seguimos manteniendo caché parcial
                 window.filtrarCategoria('destacados');
             } catch (error) {
                 console.error("Error cargando inventario esencial:", error);
             }
         }
-        cargarInventario(); 
+        cargarInventario();
 
-        // ---------- PAGINACIÓN: cargarInventarioAdminFirebase ----------
         window.cargarInventarioAdminFirebase = async (reset = true) => {
             const btn = document.getElementById('btn-cargar-admin');
             if(btn) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Cargando BD...';
@@ -1315,7 +1527,7 @@
                 if(reset) {
                     window.adminLastDoc = null;
                     window.adminFullLoaded = false;
-                    window.inventario = []; // limpiamos cache admin
+                    window.inventario = [];
                 }
 
                 let q;
@@ -1336,19 +1548,16 @@
                     window.adminLastDoc = snap.docs[snap.docs.length - 1];
                 }
 
-                // Si menos que pageSize, no hay más páginas
                 if(snap.size < window.adminPageSize) {
                     window.adminFullLoaded = true;
                 }
 
                 document.getElementById('admin-table-container').classList.remove('hidden');
 
-                // Mostrar "Cargar más" si aún hay más
                 const loadMoreWrap = document.getElementById('admin-load-more-wrap');
                 if(!window.adminFullLoaded) loadMoreWrap.classList.remove('hidden');
                 else loadMoreWrap.classList.add('hidden');
 
-                // Renderizar con chunked para evitar freeze
                 await window.renderInventarioAdmin(window.inventario);
 
                 if(btn) {
@@ -1361,7 +1570,6 @@
             }
         };
 
-        // ---------- BUSQUEDA admin directa (usa ids correctamente) ----------
         window.buscarProductoAdminDirecto = async (event) => {
             const val = document.getElementById('admin-db-search-input').value.trim();
             const type = document.getElementById('admin-db-search-type').value;
@@ -1403,7 +1611,6 @@
             btn.innerHTML = originalIcon;
         };
 
-        // ---------- Guardar producto (admin) - ahora soporta precio de oferta y cotizar ----------
         window.guardarProductoAdmin = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-guardar-prod');
@@ -1451,7 +1658,7 @@
                 desc: document.getElementById('admin-prod-desc').value,
                 imgs: imgUrls,
                 activo: true,
-                cotizar: cotizar // nuevo flag
+                cotizar: cotizar
             };
 
             try {
@@ -1501,7 +1708,6 @@
             document.getElementById('admin-product-form').classList.toggle('hidden');
         };
 
-        // --- TRABAJOS CON CARRUSEL (público) ---
         window.guardarTrabajoAdmin = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('btn-guardar-trabajo');
@@ -1512,14 +1718,12 @@
                 const urlInput = document.getElementById('admin-trabajo-url');
                 let imgUrls = Array.isArray(window.adminTrabajoImgs) ? [...window.adminTrabajoImgs] : [];
                 
-                // Subir nuevos archivos seleccionados
                 if(fileInput && fileInput.files.length > 0) {
                     const uploadPromises = Array.from(fileInput.files).map(file => window.subirArchivoAStorage(file, 'trabajos'));
                     const results = await Promise.all(uploadPromises);
                     imgUrls = imgUrls.concat(results.filter(url => url !== null));
                 }
                 
-                // Múltiples URLs pegadas
                 if (urlInput && urlInput.value.trim() !== '') {
                     const extraUrls = urlInput.value.split(',').map(s=>s.trim()).filter(s=>s);
                     imgUrls = imgUrls.concat(extraUrls);
@@ -1536,8 +1740,8 @@
                     id: trabajoId,
                     titulo: document.getElementById('admin-trabajo-titulo').value,
                     desc: document.getElementById('admin-trabajo-desc').value,
-                    img: imgUrls[0], // Mantener por retrocompatibilidad
-                    imgs: imgUrls, // Nuevo arreglo para carrusel
+                    img: imgUrls[0],
+                    imgs: imgUrls,
                     fecha: new Date().toLocaleDateString()
                 };
 
@@ -1554,7 +1758,6 @@
             }
         };
 
-        // Public: galería de trabajos (público)
         window.cargarTrabajos = async () => {
             try {
                 const snap = await getDocs(collection(db, "trabajos"));
@@ -1570,7 +1773,6 @@
                 grid.innerHTML = trabajos.map(t => {
                     const imgs = t.imgs && t.imgs.length > 0 ? t.imgs : (t.img ? [t.img] : ['https://via.placeholder.com/400?text=Trabajo']);
                     
-                    // Renderizar las imágenes absolutas superpuestas para efecto carrusel (crossfade) y lazy loading
                     const fotosHTML = imgs.map((url, i) => `
                         <img loading="lazy" src="${url}" class="trabajo-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${i === 0 ? 'opacity-100' : 'opacity-0'} group-hover:scale-105">
                     `).join('');
@@ -1605,12 +1807,11 @@
                     let nextIdx = (activeIdx + 1) % slides.length;
                     slides[nextIdx].classList.replace('opacity-0', 'opacity-100');
                 });
-            }, 3500); // Rota cada 3.5 segundos
+            }, 3500);
         };
 
         window.cargarTrabajos();
 
-        // ---------- Admin: cargar lista de trabajos ----------
         window.cargarTrabajosAdmin = async () => {
             try {
                 const snap = await getDocs(collection(db, "trabajos"));
@@ -1656,7 +1857,6 @@
                 document.getElementById('admin-trabajo-desc').value = t.desc || '';
                 window.adminTrabajoImgs = (t.imgs && t.imgs.length > 0) ? [...t.imgs] : (t.img ? [t.img] : []);
                 renderAdminTrabajoThumbnails();
-                // Scroll y abrir la pestaña de admin trabajos si no está visible
                 window.switchAdminTab('trabajos');
             } catch(e) {
                 console.error("Error editando trabajo:", e);
@@ -1700,24 +1900,20 @@
             try {
                 await deleteDoc(doc(db, "trabajos", id));
                 await window.cargarTrabajosAdmin();
-                await window.cargarTrabajos(); // actualizar galería pública
+                await window.cargarTrabajos();
             } catch(e) { alert("Error eliminando trabajo: " + e.message); }
         };
 
-        // ---------- PEDIDOS: listener controlado (solo admin) ----------
         function startPedidosListener() {
-            // Unsubscribe previo si existe
             if (pedidosUnsubscribe) {
                 try { pedidosUnsubscribe(); } catch(e) {}
                 pedidosUnsubscribe = null;
             }
-            // Listener global solo para admin (actualiza window.pedidos en tiempo real)
             pedidosUnsubscribe = onSnapshot(collection(db, "pedidos"), (snapshot) => {
                 const items = [];
                 snapshot.forEach((docSnap) => { items.push({ id: docSnap.id, ...docSnap.data() }); });
                 items.sort((a, b) => Number(b.id) - Number(a.id));
                 
-                // Notificación simple si entran pedidos nuevos cuando admin no está en la pestaña pedidos
                 if(items.length > window.pedidos.length && window.pedidos.length > 0 && currentAdminTab !== 'pedidos' && isAdmin) {
                     document.getElementById('admin-notif').classList.remove('hidden');
                     document.getElementById('admin-nav-notif').classList.remove('hidden');
@@ -1731,15 +1927,12 @@
             });
         }
 
-        // onAuthStateChanged: controlamos inicio/stop de listeners según rol
         onAuthStateChanged(auth, async (user) => {
-            // limpiar listener de pedidos si existía y user cambió a null o dejó de ser admin
             if (!user) {
                 currentUser = null; currentUserId = null; currentUserEmail = null; window.userData = null; isAdmin = false;
                 document.getElementById('user-display-name').textContent = 'Ingresar';
                 document.getElementById('account-btn').classList.remove('bg-brand-50', 'text-brand-700');
                 document.getElementById('admin-btn').classList.add('hidden');
-                // Unsubscribe pedidos
                 if (pedidosUnsubscribe) { try { pedidosUnsubscribe(); } catch(e) {} pedidosUnsubscribe = null; }
                 return;
             }
@@ -1761,13 +1954,11 @@
                 isAdmin = true;
                 currentUser = "Administrador";
                 document.getElementById('admin-btn').classList.remove('hidden');
-                // iniciar listener de pedidos sólo cuando es admin
                 startPedidosListener();
             } else {
                 isAdmin = false;
                 currentUser = displayName;
                 document.getElementById('admin-btn').classList.add('hidden');
-                // Si había listener de pedidos, lo detenemos
                 if (pedidosUnsubscribe) { try { pedidosUnsubscribe(); } catch(e) {} pedidosUnsubscribe = null; }
             }
             
@@ -1845,7 +2036,6 @@
 
         window.handleLogout = async () => { 
             await signOut(auth);
-            // limpiar listener de pedidos si existía
             if (pedidosUnsubscribe) { try { pedidosUnsubscribe(); } catch(e) {} pedidosUnsubscribe = null; }
         };
         window.toggleModal = (id) => { document.getElementById(id).classList.toggle('hidden'); };
@@ -1870,10 +2060,162 @@
             }
         };
 
-        // BUSQUEDA: ahora usa caché la primera vez (evita lecturas repetidas)
+        window.normalizarBusqueda = (value) => {
+            return String(value || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/[^a-z0-9]/g, '');
+        };
+
+        window.coincideBusqueda = (texto, query) => {
+            const text = window.normalizarBusqueda(texto);
+            const q = window.normalizarBusqueda(query);
+
+            if (!q) return false;
+            if (text.includes(q)) return true;
+
+            const textDigits = text.replace(/[a-z]/g, '');
+            const queryDigits = q.replace(/[a-z]/g, '');
+
+            if (queryDigits.length >= 4 && textDigits.includes(queryDigits)) {
+                return true;
+            }
+
+            return false;
+        };
+
+        window.toggleLogoMenu = (event) => {
+            if (event) event.stopPropagation();
+
+            const menu = document.getElementById('logo-site-menu');
+            const button = event?.currentTarget;
+
+            if (!menu) return;
+
+            const estabaOculto = menu.classList.contains('hidden');
+            menu.classList.toggle('hidden');
+
+            if (button) {
+                button.setAttribute('aria-expanded', String(estabaOculto));
+            }
+        };
+
+        window.closeLogoMenu = () => {
+            const menu = document.getElementById('logo-site-menu');
+
+            if (menu) {
+                menu.classList.add('hidden');
+            }
+
+            document
+                .querySelector('[aria-label="Abrir menú principal"]')
+                ?.setAttribute('aria-expanded', 'false');
+        };
+
+        document.addEventListener('click', (event) => {
+            const wrapper = document.querySelector('.logo-menu-wrapper');
+
+            if (wrapper && !wrapper.contains(event.target)) {
+                window.closeLogoMenu();
+            }
+        });
+
+        window.navigateFromMenu = (event, sectionId) => {
+            if (event) event.preventDefault();
+
+            window.closeLogoMenu();
+
+            const section = document.getElementById(sectionId);
+
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        };
+
+        window.navigateToCategory = (category) => {
+            window.closeLogoMenu();
+            window.seleccionarCategoriaCatalogo(category);
+
+            const catalogSection = document.getElementById('catalogo-section');
+            if (catalogSection) {
+                catalogSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        };
+
+        window.obtenerProductosPorCategoria = (items, category) => {
+            if (!Array.isArray(items)) return [];
+
+            if (category === 'todos') {
+                return items;
+            }
+
+            if (category === 'cauchos') {
+                return items.filter(item => item.tipo === 'caucho');
+            }
+
+            if (category === 'frenos') {
+                return items.filter(item =>
+                    item.tipo === 'pastilla' ||
+                    item.tipo === 'disco'
+                );
+            }
+
+            if (category === 'servicios') {
+                return items.filter(item => item.tipo === 'servicio');
+            }
+
+            return items;
+        };
+
+        window.actualizarBotonesCategoria = (category) => {
+            document.querySelectorAll('.catalog-category-btn').forEach(button => {
+                const isActive = button.dataset.category === category;
+                button.classList.toggle('active', isActive);
+            });
+        };
+
+        window.seleccionarCategoriaCatalogo = (category) => {
+            window.categoriaCatalogoActiva = category;
+            window.actualizarBotonesCategoria(category);
+
+            const searchInput = document.getElementById('master-search');
+            if (searchInput) {
+                searchInput.value = '';
+            }
+
+            window.catalogVisibleCount = 12;
+
+            let titulo = 'Catálogo Completo';
+
+            if (category === 'cauchos') {
+                titulo = 'Cauchos';
+            } else if (category === 'frenos') {
+                titulo = 'Frenos';
+            } else if (category === 'servicios') {
+                titulo = 'Servicios';
+            }
+
+            document.getElementById('catalogo-titulo').textContent = titulo;
+
+            const productosFiltrados = window.obtenerProductosPorCategoria(
+                window.inventario,
+                category
+            );
+
+            window.renderCatalogo(productosFiltrados, false);
+        };
+
         window.ejecutarBusquedaManual = async () => {
-            const queryText = document.getElementById('master-search').value.toLowerCase().trim();
+            const queryText = document.getElementById('master-search').value.trim();
             if (!queryText) {
+                window.catalogVisibleCount = 12;
                 window.filtrarCategoria('destacados');
                 return;
             }
@@ -1881,32 +2223,41 @@
             document.getElementById('catalogo-titulo').innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Buscando...`;
             
             try {
-                // Si no hemos cargado el inventario completo aún, lo obtenemos una sola vez
                 if (!window.fullInventoryLoaded) {
                     const querySnapshot = await getDocs(collection(db, "inventario"));
                     const todos = [];
                     querySnapshot.forEach((docSnap) => { todos.push({ id: docSnap.id, ...docSnap.data() }); });
-                    // Reemplazamos cache completa
                     window.inventario = todos;
                     window.fullInventoryLoaded = true;
                 }
 
-                document.getElementById('catalogo-titulo').textContent = `Resultados para "${queryText}"`;
-                document.querySelectorAll('.filter-btn').forEach(btn => { btn.classList.remove('bg-white/80', 'shadow-sm', 'text-brand-900'); btn.classList.add('text-slate-600'); });
-                
-                const q = queryText.split(' ');
+                const tokens = queryText.split(/\s+/).filter(Boolean);
                 const resultados = window.inventario.filter(item => {
-                    const str = `${item.marca || ''} ${item.vehiculo || ''} ${item.refer || ''} ${item.fmsi || ''} ${item.desc || ''} ${item.tipo || ''}`.toLowerCase();
-                    return q.every(term => str.includes(term));
+                    const str = `${item.marca || ''} ${item.vehiculo || ''} ${item.refer || ''} ${item.fmsi || ''} ${item.desc || ''} ${item.tipo || ''}`;
+                    return tokens.every(term => window.coincideBusqueda(str, term));
                 });
+
+                document.getElementById('catalogo-titulo').textContent = `Resultados para "${queryText}"`;
+
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('bg-white/80', 'shadow-sm', 'text-brand-900');
+                    btn.classList.add('text-slate-600');
+                });
+
+                window.catalogVisibleCount = 12;
+
+                const categoriaAnterior = window.categoriaCatalogoActiva;
+                window.categoriaCatalogoActiva = 'todos';
                 window.renderCatalogo(resultados, false);
+                window.categoriaCatalogoActiva = categoriaAnterior;
+                window.actualizarBotonesCategoria(categoriaAnterior);
+
             } catch(e) {
                 console.error(e);
                 document.getElementById('catalogo-titulo').textContent = `Error en búsqueda`;
             }
         };
 
-        // ---------- Generadores de tarjeta y render públicos (añadí loading="lazy" a imágenes y adaptado cotizar + badges z-index) ----------
         window.generarTarjetaHTML = (item) => {
             const enCarrito = window.carrito.find(c => c.id === item.id);
             const cantidad = enCarrito ? enCarrito.cantidad : 0;
@@ -1925,7 +2276,6 @@
             let controlesHTML = "";
             if(isActivo) {
                 if(item.cotizar) {
-                    // Si el producto es a cotizar, mostramos botón directo a WhatsApp para cotización
                     const wpMsg = encodeURIComponent(`Hola Cauchos Caracas, deseo cotizar el producto: ${item.marca || ''} ${item.refer ? 'REF:'+item.refer : ''} - ${item.vehiculo || ''}`);
                     controlesHTML = `<div class="mt-4">
                         <a onclick="event.stopPropagation();" href="https://wa.me/5804126444380?text=${wpMsg}" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-3 rounded-xl transition-colors shadow-sm flex items-center justify-center gap-2">
@@ -1967,17 +2317,29 @@
                 </div>
             `;
 
-            const imgUrl = (item.imgs && item.imgs.length > 0) ? item.imgs[0] : 'https://via.placeholder.com/400?text=Sin+Imagen';
-            // Preparar mini-thumbs estáticas (si hay más imágenes)
+            const imgsProducto = (item.imgs && item.imgs.length > 0) ? item.imgs : ['https://via.placeholder.com/400?text=Sin+Imagen'];
+            const imgUrl = imgsProducto[0];
+
             let thumbsHTML = '';
-            if (item.imgs && item.imgs.length > 1) {
-                thumbsHTML = `<div class="thumb-stack">` + item.imgs.slice(1,4).map((url, idx) => {
-                    const index = idx + 1;
-                    return `<div onclick="window.abrirProducto('${item.id}', ${index}); event.stopPropagation();" class="static-thumb" style="background-image: url('${url}')" title="Ver imagen"></div>`;
-                }).join('') + `</div>`;
+            if (imgsProducto.length > 1) {
+                thumbsHTML = `
+                    <div class="thumb-stack">
+                        ${imgsProducto.slice(1, 4).map((url, idx) => {
+                            const index = idx + 1;
+
+                            return `
+                                <div
+                                    onclick="window.cambiarImagenTarjeta('${item.id}', ${index}); event.stopPropagation();"
+                                    class="static-thumb"
+                                    style="background-image: url('${url}')"
+                                    title="Ver imagen"
+                                ></div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
             }
 
-            // Mostrar precio - si hay oferta con precio_oferta, mostrar tachado y nuevo precio
             let precioHTML = `<div class="text-3xl font-black text-brand-900">$${Number(item.precio || 0).toFixed(2)}</div>`;
             if (item.oferta && item.precio_oferta && Number(item.precio_oferta) > 0) {
                 precioHTML = `
@@ -1990,16 +2352,47 @@
                 precioHTML = `<div class="text-lg font-black text-amber-500 tracking-tight">Consultar Precio</div>`;
             }
 
-            // Renderizamos con la "primary-photo-wrapper" que da un fondo aplicado y centra la imagen principal.
-            // NOTE: cambié la altura para dispositivos móviles con la clase product-image-mobile-large
             return `
                 <div onclick="window.abrirProducto('${item.id}', 0)" class="liquid-glass-card rounded-3xl overflow-hidden hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer group relative border-2 border-transparent hover:border-brand-200 h-full">
                     ${overlayAgotado}
                     ${badgePromo}
-                    <div class="relative overflow-hidden flex-shrink-0 product-image-mobile-large h-64 md:h-48 bg-slate-200">
+                    <div class="relative overflow-hidden flex-shrink-0 product-image-mobile-large h-64 md:h-48 bg-slate-200 product-image-gallery">
                         <div class="primary-photo-wrapper" style="height:100%;">
-                            <img loading="lazy" src="${imgUrl}" class="primary-img" alt="Imagen producto" onclick="event.stopPropagation(); window.abrirProducto('${item.id}', 0)">
+                            <img
+                                loading="lazy"
+                                src="${imgUrl}"
+                                data-card-product-id="${item.id}"
+                                data-card-image-index="0"
+                                class="primary-img"
+                                alt="Imagen producto"
+                                onclick="event.stopPropagation(); window.abrirProducto('${item.id}', 0)"
+                            >
                         </div>
+
+                        ${
+                            imgsProducto.length > 1
+                                ? `
+                                    <button
+                                        type="button"
+                                        class="product-card-gallery-arrow left"
+                                        aria-label="Imagen anterior"
+                                        onclick="event.stopPropagation(); window.cambiarImagenTarjeta('${item.id}', -1)"
+                                    >
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="product-card-gallery-arrow right"
+                                        aria-label="Imagen siguiente"
+                                        onclick="event.stopPropagation(); window.cambiarImagenTarjeta('${item.id}', 1)"
+                                    >
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+                                `
+                                : ''
+                        }
+
                         ${thumbsHTML}
                         <div class="absolute top-3 left-3 px-3 py-1 rounded-md border shadow-sm text-[10px] font-black uppercase tracking-widest ${badgeClass}">
                             ${labelTipo}
@@ -2019,22 +2412,93 @@
             `;
         };
 
+        window.catalogVisibleCount = 12;
+        window.currentCatalogItems = [];
+
         window.renderCatalogo = (items, agrupado = false) => {
             const grid = document.getElementById('catalog-grid');
-            grid.innerHTML = '';
-            
-            const itemsPrincipales = items.filter(i => i.tipo !== 'servicio');
-            const itemsServicios = window.inventario.filter(i => i.tipo === 'servicio');
-            
-            window.renderServiciosElegantes(itemsServicios);
 
-            if(itemsPrincipales.length === 0) {
-                grid.innerHTML = `<div class="col-span-full text-center py-10 text-slate-400 font-bold">No se encontraron productos para esta categoría.</div>`;
+            if (!grid) return;
+
+            grid.innerHTML = '';
+
+            const categoriaActual = window.categoriaCatalogoActiva || 'todos';
+
+            const itemsFiltradosPorCategoria =
+                window.obtenerProductosPorCategoria(items, categoriaActual);
+
+            const itemsPrincipales = itemsFiltradosPorCategoria.filter(
+                item => item.tipo !== 'servicio'
+            );
+
+            const itemsServicios = itemsFiltradosPorCategoria.filter(
+                item => item.tipo === 'servicio'
+            );
+
+            if (categoriaActual === 'servicios') {
+                window.renderServiciosElegantes(itemsServicios);
+            } else {
+                window.renderServiciosElegantes(
+                    window.inventario.filter(item => item.tipo === 'servicio')
+                );
+            }
+
+            if (itemsPrincipales.length === 0 && categoriaActual !== 'servicios') {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-10 text-slate-400 font-bold">
+                        No se encontraron productos para esta categoría.
+                    </div>
+                `;
+
+                const oldLoadMore = document.getElementById('catalog-load-more-wrap');
+
+                if (oldLoadMore) {
+                    oldLoadMore.style.display = 'none';
+                }
+
                 return;
             }
 
+            window.currentCatalogItems = itemsPrincipales;
+
+            const visibleItems = itemsPrincipales.slice(
+                0,
+                window.catalogVisibleCount
+            );
+
             grid.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch";
-            grid.innerHTML = itemsPrincipales.map(window.generarTarjetaHTML).join('');
+            grid.innerHTML = visibleItems.map(window.generarTarjetaHTML).join('');
+
+            const loadMoreWrap = document.getElementById('catalog-load-more-wrap');
+
+            if (itemsPrincipales.length > visibleItems.length) {
+                if (!loadMoreWrap) {
+                    const wrapper = document.createElement('div');
+                    wrapper.id = 'catalog-load-more-wrap';
+                    wrapper.className = 'flex justify-center mt-6';
+                    wrapper.innerHTML = `
+                        <button onclick="window.cargarMasProductosCatalogo()" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-black rounded-xl shadow-md transition-all">
+                            <i class="fa-solid fa-arrow-down mr-2"></i> Ver más
+                        </button>
+                    `;
+                    grid.insertAdjacentElement('afterend', wrapper);
+                } else {
+                    loadMoreWrap.innerHTML = `
+                        <button onclick="window.cargarMasProductosCatalogo()" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-black rounded-xl shadow-md transition-all">
+                            <i class="fa-solid fa-arrow-down mr-2"></i> Ver más
+                        </button>
+                    `;
+                    loadMoreWrap.style.display = 'flex';
+                }
+            } else if (loadMoreWrap) {
+                loadMoreWrap.style.display = 'none';
+            }
+        };
+
+        window.cargarMasProductosCatalogo = () => {
+            if (!window.currentCatalogItems || !window.currentCatalogItems.length) return;
+            window.catalogVisibleCount += 12;
+            window.renderCatalogo(window.currentCatalogItems, false);
         };
 
         window.renderServiciosElegantes = (servicios) => {
@@ -2050,7 +2514,6 @@
                 const imgUrl = (servicio.imgs && servicio.imgs.length > 0) ? servicio.imgs[0] : 'https://via.placeholder.com/400?text=Servicio';
                 const wpMsg = encodeURIComponent(`Hola Cauchos Caracas, deseo cotizar el servicio: ${servicio.marca || 'Servicio General'}`);
                 
-                // Lógica de precio para el servicio
                 let precioHtml = `<div class="text-lg font-black text-amber-400 tracking-tight">Previa Cotización</div>`;
                 if(servicio.precio && servicio.precio > 0) {
                     precioHtml = `<div class="text-lg font-black text-amber-400 tracking-tight">Desde $${Number(servicio.precio).toFixed(2)}</div>`;
@@ -2080,7 +2543,6 @@
             }).join('');
         };
 
-        // Abrir producto: ahora acepta índice de imagen y maneja caso cotizar
         window.abrirProducto = (id, startIndex = 0) => {
             productoActual = window.inventario.find(i => i.id == id);
             if (!productoActual) return;
@@ -2093,7 +2555,6 @@
                 ${productoActual.fmsi ? `<span class="inline-block mr-3 bg-slate-100 px-2 py-0.5 rounded border border-slate-200"><b class="text-slate-400">FMSI:</b> ${productoActual.fmsi}</span>` : ''}
             `;
             
-            // Mostrar precio en modal (con oferta si aplica)
             const priceBlock = document.getElementById('modal-price-block');
             const priceOriginalEl = document.getElementById('modal-price-original');
             if (productoActual.oferta && productoActual.precio_oferta && Number(productoActual.precio_oferta) > 0) {
@@ -2143,9 +2604,7 @@
                 document.getElementById('product-modal-content').classList.remove('scale-95');
             }, 10);
 
-            // Inicializar interacciones de imagen (zoom con rueda, doble-clic, swipe)
             window.setupModalImageInteractions();
-            // agregar listeners de teclado para navegación
             window._prodModalKeydown = (ev) => {
                 if(ev.key === 'ArrowLeft') { window.cambiarImagen(-1); }
                 else if(ev.key === 'ArrowRight') { window.cambiarImagen(1); }
@@ -2158,11 +2617,9 @@
             const modal = document.getElementById('product-modal');
             modal.classList.add('opacity-0');
             document.getElementById('product-modal-content').classList.add('scale-95');
-            // Reset zoom al cerrar
             const img = document.getElementById('modal-main-img');
             if(img) { img.style.transform = 'scale(1) translate(0,0)'; img.classList.remove('zoomed'); img.dataset.scale = 1; img.dataset.panX = 0; img.dataset.panY = 0; }
             setTimeout(() => { modal.classList.add('hidden'); productoActual = null; }, 300);
-            // quitar listener de teclado
             window.removeEventListener('keydown', window._prodModalKeydown);
         };
 
@@ -2173,7 +2630,6 @@
             const container = document.getElementById('modal-cart-controls');
             
             if(productoActual.cotizar) {
-                // producto a cotizar -> boton directo a whatsapp con mensaje detallado
                 const msg = encodeURIComponent(`Hola Cauchos Caracas, deseo cotizar: ${productoActual.marca || ''} ${productoActual.refer ? 'REF:'+productoActual.refer : ''} - ${productoActual.vehiculo || ''}`);
                 container.innerHTML = `<a onclick="event.stopPropagation();" href="https://wa.me/5804126444380?text=${msg}" target="_blank" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-900 font-bold py-4 rounded-xl transition-all flex items-center justify-center gap-3 text-lg"><i class="fa-solid fa-handshake"></i> Solicitar Cotización</a>`;
                 return;
@@ -2202,11 +2658,9 @@
         window.actualizarImagenModal = () => {
             if(!productoActual) return;
             const imgs = (productoActual.imgs && productoActual.imgs.length > 0) ? productoActual.imgs : ['https://via.placeholder.com/400?text=Sin+Imagen'];
-            // garantizar índice válido
             indiceImagenActual = Math.max(0, Math.min(indiceImagenActual, imgs.length - 1));
             const imgEl = document.getElementById('modal-main-img');
 
-            // Para evitar flicker se actualiza src y se usa transición de opacidad en lugar de mensajes.
             imgEl.style.opacity = '0';
             setTimeout(() => {
                 imgEl.src = imgs[indiceImagenActual] || imgs[0];
@@ -2219,7 +2673,6 @@
                     `<button onclick="indiceImagenActual = ${i}; window.actualizarImagenModal()" title="Ver imagen ${i+1}" aria-current="${i === indiceImagenActual}" class="w-10 h-10 rounded-md transition-all border-2 ${i === indiceImagenActual ? 'border-white' : 'border-white/30'}" style="background-image: url('${url}'); background-size: cover; background-position: center;"></button>`
                 ).join('');
             } else { dotsContainer.innerHTML = ''; }
-            // Reset zoom cuando cambiamos imagen
             const img = document.getElementById('modal-main-img');
             if(img) { img.style.transform = 'scale(1) translate(0,0)'; img.classList.remove('zoomed'); img.dataset.scale = 1; img.dataset.panX = 0; img.dataset.panY = 0; }
         };
@@ -2230,7 +2683,51 @@
             window.actualizarImagenModal();
         };
 
-        // Modifica carrito y renderiza (usa ids correctos)
+        window.cambiarImagenTarjeta = (productId, directionOrIndex) => {
+            const producto = window.inventario.find(
+                item => String(item.id) === String(productId)
+            );
+
+            if (!producto || !producto.imgs || producto.imgs.length <= 1) {
+                return;
+            }
+
+            const imagenes = producto.imgs;
+
+            const imgElement = document.querySelector(
+                `[data-card-product-id="${CSS.escape(String(productId))}"]`
+            );
+
+            if (!imgElement) return;
+
+            const indiceActual = Number(
+                imgElement.dataset.cardImageIndex || 0
+            );
+
+            let nuevoIndice;
+
+            if (
+                typeof directionOrIndex === 'number' &&
+                Math.abs(directionOrIndex) === 1
+            ) {
+                nuevoIndice =
+                    (indiceActual + directionOrIndex + imagenes.length) %
+                    imagenes.length;
+            } else {
+                nuevoIndice = Number(directionOrIndex) || 0;
+                nuevoIndice =
+                    (nuevoIndice + imagenes.length) % imagenes.length;
+            }
+
+            imgElement.src = imagenes[nuevoIndice];
+            imgElement.dataset.cardImageIndex = String(nuevoIndice);
+
+            imgElement.onclick = (event) => {
+                event.stopPropagation();
+                window.abrirProducto(productId, nuevoIndice);
+            };
+        };
+
         window.modificarCarrito = (id, cantidad) => {
             const index = window.carrito.findIndex(c => c.id == id);
             
@@ -2240,7 +2737,6 @@
             } else if (cantidad > 0) {
                 const item = window.inventario.find(i => i.id == id);
                 if(item) {
-                    // Guardar precio efectivo en el item dentro del carrito para evitar confusiones si cambia después
                     const effectivePrice = (item.oferta && item.precio_oferta && Number(item.precio_oferta) > 0) ? Number(item.precio_oferta) : Number(item.precio || 0);
                     window.carrito.push({ ...item, cantidad: 1, effectivePrice: effectivePrice });
                 }
@@ -2263,7 +2759,6 @@
             else badge.classList.add('hidden');
         };
 
-        // Control para mostrar/ocultar impuestos en UI (por defecto ocultos)
         window.showTaxes = false;
         window.toggleTaxes = () => {
             window.showTaxes = !window.showTaxes;
@@ -2298,7 +2793,6 @@
 
             let subtotal = 0;
             window.carrito.forEach(item => {
-                // usar effectivePrice si existe, sino calcularlo
                 const price = item.effectivePrice !== undefined ? item.effectivePrice : ((item.oferta && item.precio_oferta && Number(item.precio_oferta) > 0) ? Number(item.precio_oferta) : Number(item.precio || 0));
                 const itemTotal = price * item.cantidad;
                 subtotal += itemTotal;
@@ -2325,7 +2819,6 @@
                 `;
             });
 
-            // calcular pero mostrar según flag
             const iva = subtotal * 0.16;
             let igtf = 0;
             
@@ -2340,7 +2833,6 @@
             igtfEl.textContent = igtf.toFixed(2);
             totalEl.textContent = (window.showTaxes ? totalCalculated.toFixed(2) : subtotal.toFixed(2));
 
-            // Mostrar/ocultar filas con base en showTaxes
             if(window.showTaxes) {
                 ivaRow.classList.remove('hidden');
                 if (method && method.includes('Efectivo')) igtfRow.classList.remove('hidden'); else igtfRow.classList.add('hidden');
@@ -2350,8 +2842,6 @@
             }
         };
 
-        // PROCESAR COMPRA: ahora redirige a WhatsApp Business con mensaje detallado tras guardar pedido en Firestore
-        // Ajustado: el mensaje a WhatsApp indicará "Impuesto: a determinar" (tú lo calculas manualmente en la conversación)
         window.procesarCompra = async () => {
             if(window.carrito.length === 0) return alert('El carrito está vacío');
             
@@ -2370,7 +2860,6 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Procesando...';
             btn.disabled = true;
 
-            // calcular subtotal actual (usar precios efectivos)
             let subtotal = 0;
             window.carrito.forEach(item => {
                 const price = item.effectivePrice !== undefined ? item.effectivePrice : ((item.oferta && item.precio_oferta && Number(item.precio_oferta) > 0) ? Number(item.precio_oferta) : Number(item.precio || 0));
@@ -2394,13 +2883,10 @@
             try {
                 await setDoc(doc(db, "pedidos", pedido.id), pedido);
 
-                // Construir mensaje para WhatsApp Business (resumen completo)
                 const lineItems = pedido.items.map(i => `${i.cantidad}x ${i.marca}${i.refer ? ' ('+i.refer+')' : ''} - $${((i.effectivePrice !== undefined ? i.effectivePrice : (i.oferta && i.precio_oferta ? i.precio_oferta : i.precio)) * i.cantidad).toFixed(2)}`).join('%0A');
 
-                // Mensaje ajustado: enviamos subtotal y dejamos impuestos a determinar por whatsapp
                 const message = `Nuevo pedido%0ACliente: ${encodeURIComponent(nombre)}%0ATeléfono: ${encodeURIComponent(telefono)}%0AEmail: ${encodeURIComponent(email)}%0A%0AProductos:%0A${lineItems}%0A%0ASubtotal: $${subtotal.toFixed(2)}%0AImpuesto: a determinar%0ATotal: a determinar%0AMétodo de pago: ${encodeURIComponent(method)}%0A%0ADirección: ${encodeURIComponent(direccion)}%0APedido ID: ${pedido.id}`;
 
-                // Abrir WhatsApp Business en nueva pestaña con mensaje
                 const waUrl = `https://wa.me/5804126444380?text=${message}`;
                 window.open(waUrl, '_blank');
 
@@ -2433,22 +2919,33 @@
 
             if(!render) return;
 
+            window.catalogVisibleCount = 12;
             let filtrados = [];
-            if(cat === 'destacados') {
-                filtrados = window.inventario.filter(i => i.destacado);
-                document.getElementById('catalogo-titulo').textContent = 'Destacados';
+            let titulo = 'Catálogo Completo';
+
+            if (cat === 'destacados') {
+                filtrados = window.inventario.filter(item => item.destacado);
+                titulo = 'Destacados';
             } else if (cat === 'ofertas') {
-                filtrados = window.inventario.filter(i => i.oferta);
-                document.getElementById('catalogo-titulo').textContent = 'Ofertas Especiales';
+                filtrados = window.inventario.filter(item => item.oferta);
+                titulo = 'Ofertas Especiales';
             } else {
-                filtrados = window.inventario; 
-                document.getElementById('catalogo-titulo').textContent = 'Catálogo Completo';
+                filtrados = window.inventario;
             }
-            
+
+            const categoriaActual = window.categoriaCatalogoActiva || 'todos';
+            if (categoriaActual !== 'todos') {
+                filtrados = window.obtenerProductosPorCategoria(
+                    filtrados,
+                    categoriaActual
+                );
+            }
+
+            document.getElementById('catalogo-titulo').textContent = titulo;
+
             window.renderCatalogo(filtrados, false);
         };
 
-        // Render historial del cliente: ahora consulta filtrado por uid/email (evita listener global)
         window.renderHistorialCliente = async () => {
             const container = document.getElementById('client-orders-container');
             if(!currentUserEmail && !currentUserId) {
@@ -2493,7 +2990,6 @@
             }
         };
 
-        // --- SISTEMA DE OPINIONES ---
         window.abrirModalOpinion = () => {
             document.getElementById('opinion-nombre').value = '';
             document.getElementById('opinion-text-modal').value = '';
@@ -2531,7 +3027,6 @@
             }
         };
 
-        // Cargar opiniones públicas (limitadas)
         window.cargarOpinionesPublicas = async () => {
             try {
                 const q = query(collection(db, "opiniones"), where("aprobado", "==", true), limit(6));
@@ -2567,7 +3062,6 @@
                 console.error("Error al cargar opiniones: ", error);
             }
         };
-        // Cargar las opiniones al inicio
         window.cargarOpinionesPublicas();
 
         window.renderOpinionesAdmin = async () => {
@@ -2579,7 +3073,6 @@
                 const items = [];
                 snap.forEach(d => items.push({ id: d.id, ...d.data() }));
                 
-                // Ordenar por más reciente (asumiendo id de Date.now())
                 items.sort((a, b) => Number(b.id) - Number(a.id));
 
                 if(items.length === 0) {
@@ -2615,7 +3108,7 @@
             try {
                 await updateDoc(doc(db, "opiniones", id), { aprobado: estado });
                 window.renderOpinionesAdmin();
-                window.cargarOpinionesPublicas(); // Refrescar en el front end
+                window.cargarOpinionesPublicas();
             } catch (e) { alert("Error actualizando: " + e.message); }
         };
 
@@ -2627,9 +3120,7 @@
                 window.cargarOpinionesPublicas();
             } catch (e) { alert("Error eliminando: " + e.message); }
         };
-        // --- FIN SISTEMA DE OPINIONES ---
 
-        // ---------- FUNCIONES DE ADMIN: pestañas y render ----------
         window.switchAdminTab = (tab) => {
             currentAdminTab = tab;
             const tabs = ['inventario', 'servicios', 'pedidos', 'clientes', 'trabajos', 'opiniones', 'marcas', 'ajustes'];
@@ -2656,7 +3147,6 @@
             } else if (tab === 'opiniones') {
                 window.renderOpinionesAdmin();
             } else if (tab === 'trabajos') {
-                // cargar lista de trabajos en admin
                 window.cargarTrabajosAdmin();
             } else if (tab === 'marcas') {
                 window.cargarMarcas();
@@ -2665,7 +3155,6 @@
             }
         };
 
-        // ---------- RENDER INVENTARIO ADMIN (chunked para evitar freeze) ----------
         window.renderInventarioAdmin = async (itemsList = window.inventario, chunkSize = 50) => {
             const tbodyProd = document.getElementById('admin-table-products');
             const tbodyServ = document.getElementById('admin-table-services');
@@ -2674,11 +3163,9 @@
             tbodyProd.innerHTML = '';
             tbodyServ.innerHTML = '';
 
-            // separar servicios (pequeño) y productos
             const servicios = itemsList.filter(i => i.tipo === 'servicio');
             const productos = itemsList.filter(i => i.tipo !== 'servicio');
 
-            // render servicios (normalmente pocos)
             servicios.forEach(item => {
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
@@ -2694,7 +3181,6 @@
                 tbodyServ.appendChild(tr);
             });
 
-            // render productos en chunks
             for (let i = 0; i < productos.length; i += chunkSize) {
                 const chunk = productos.slice(i, i + chunkSize);
                 const frag = document.createDocumentFragment();
@@ -2728,7 +3214,6 @@
                 });
                 tbodyProd.appendChild(frag);
 
-                // Ceder tiempo al navegador para evitar freeze
                 await new Promise(resolve => {
                     if ('requestIdleCallback' in window) requestIdleCallback(resolve, {timeout: 50});
                     else setTimeout(resolve, 0);
@@ -2790,7 +3275,6 @@
             window.renderInventarioAdmin(filtrados);
         };
 
-        // Acciones Masivas (usa updateDoc/deleteDoc)
         window.bulkToggleDestacado = async () => {
             if(!confirm(`¿Alternar estatus 'Destacado' para ${window.selectedProducts.size} productos?`)) return;
             try {
@@ -2896,7 +3380,6 @@
         window.renderClientesAdmin = () => {
             const container = document.getElementById('admin-clients-list');
             
-            // Agrupar pedidos por email o uid
             const clientesMap = new Map();
             window.pedidos.forEach(p => {
                 if(!p.cliente) return;
@@ -2948,17 +3431,10 @@
             `).join('');
         };
 
-        // ---------- Procesar carga masiva Excel (rehice y mejoré la lógica) ----------
-        // Ahora:
-        // - Detecta columnas con tolerancia a variantes de nombre.
-        // - Muestra un resumen previo (columnas detectadas y ejemplos) mediante confirm.
-        // - Ignora casillas vacías (no fuerza valores).
-        // - Sube filas mapeadas al formato que usamos en la app (colección "inventario").
         window.procesarCargaMasivaExcel = async (event) => {
             const file = event.target.files[0];
             if (!file) return;
 
-            // Leer archivo y convertir a JSON con keys según la primera fila (headers)
             const reader = new FileReader();
             reader.onload = async (e) => {
                 try {
@@ -2966,18 +3442,14 @@
                     const workbook = XLSX.read(data, {type: 'array'});
                     const sheetName = workbook.SheetNames[0];
                     const worksheet = workbook.Sheets[sheetName];
-                    // defval: '' -> para asegurarnos de obtener propiedades incluso vacías (útil para detectar columnas)
                     const json = XLSX.utils.sheet_to_json(worksheet, {defval: ''});
 
                     if (!Array.isArray(json) || json.length === 0) {
                         return alert("El archivo está vacío o no tiene el formato correcto.");
                     }
 
-                    // Detectar columnas (tomamos las claves del primer objeto)
                     const detectedColumns = Object.keys(json[0] || {});
-                    // Mostrar resumen previo (columnas y algunas filas ejemplo)
                     const sampleRows = json.slice(0, 5).map((r, idx) => {
-                        // solo mostrar claves y si están vacías marcar como [vacío]
                         const preview = {};
                         detectedColumns.forEach(k => preview[k] = (r[k] === '' || r[k] === null || typeof r[k] === 'undefined') ? '[vacío]' : String(r[k]).slice(0, 60));
                         return `#${idx+1}: ${JSON.stringify(preview)}`;
@@ -2988,7 +3460,6 @@
                         return;
                     }
 
-                    // Modal / progreso sencillo
                     let progressEl = document.getElementById('excel-upload-progress');
                     if(!progressEl) {
                         progressEl = document.createElement('div');
@@ -3007,7 +3478,6 @@
                         document.body.appendChild(progressEl);
                     }
 
-                    // Helpers para mapeo flexible de columnas
                     const normalize = (s) => (s || '').toString().trim().toLowerCase().replace(/\s+/g, ' ');
                     const parseBoolean = (v) => {
                         if (typeof v === 'boolean') return v;
@@ -3016,7 +3486,6 @@
                         return (s === '1' || s === 'true' || s === 'si' || s === 'yes' || s === 'x' || s === 'y');
                     };
 
-                    // Posibles variantes para cada campo
                     const fieldOptions = {
                         id: ['id', 'identificador'],
                         tipo: ['tipo', 'categoria', 'categoría', 'class', 'category'],
@@ -3030,24 +3499,16 @@
                         fmsi: ['fmsi'],
                         vehiculo: ['vehiculo', 'vehículo', 'aplicacion', 'aplicación', 'vehículo/aplicación'],
                         desc: ['desc', 'descripcion', 'descripción', 'detalle', 'description'],
-                        img_urls: ['img_urls', 'imgs', 'imagenes', 'imagenes_urls', 'imagenes_urls', 'imagenes_urls'],
+                        img_urls: ['img_urls', 'imgs', 'imagenes', 'imagenes_urls', 'imagenes_urls'],
                         activo: ['activo', 'enabled', 'habilitado'],
                         cotizar: ['cotizar', 'a cotizar', 'price_to_quote']
                     };
 
-                    // Preprocesar: crear mapping headerNormalized -> originalHeader
-                    const headerMap = {};
-                    detectedColumns.forEach(h => {
-                        headerMap[normalize(h)] = h;
-                    });
-
-                    // Function to find the value for a given field from a row using alternatives
                     const findValueInRow = (row, alternatives) => {
                         for(const alt of alternatives) {
                             const key = Object.keys(row).find(k => normalize(k) === normalize(alt));
                             if(key !== undefined) return row[key];
                         }
-                        // fallback: try to find any header that contains the alt text
                         for(const alt of alternatives) {
                             const found = Object.keys(row).find(k => normalize(k).includes(normalize(alt)));
                             if(found) return row[found];
@@ -3055,7 +3516,6 @@
                         return undefined;
                     };
 
-                    // Procesar filas
                     let success = 0;
                     let errors = 0;
                     for(let i = 0; i < json.length; i++) {
@@ -3063,8 +3523,6 @@
                         progressEl.innerHTML = `Subiendo fila ${i+1} de ${json.length}...`;
 
                         try {
-                            // Mapear campos con flexibilidad (solo asignar si hay valor no vacío)
-                            // Detectar id si viene, sino generar por timestamp + indice
                             let idVal = findValueInRow(row, fieldOptions.id);
                             idVal = (idVal && String(idVal).trim() !== '') ? String(idVal).trim() : (Date.now().toString() + '_' + i);
 
@@ -3107,7 +3565,6 @@
                             if (vehiculoVal && String(vehiculoVal).trim() !== '') producto.vehiculo = String(vehiculoVal).trim();
                             if (descVal && String(descVal).trim() !== '') producto.desc = String(descVal).trim();
 
-                            // imgs: si vienen separadas por comas, convertir a arreglo; si no, si está vacío, usar placeholder
                             let imgsArr = [];
                             if (imgUrlsVal && String(imgUrlsVal).trim() !== '') {
                                 imgsArr = String(imgUrlsVal).split(',').map(s => s.trim()).filter(s => s);
@@ -3118,7 +3575,6 @@
                             producto.activo = (activoVal !== undefined && String(activoVal).trim() !== '') ? parseBoolean(activoVal) : true;
                             producto.cotizar = (cotizarVal !== undefined && String(cotizarVal).trim() !== '') ? parseBoolean(cotizarVal) : false;
 
-                            // Guardar en Firestore (colección 'inventario')
                             await setDoc(doc(db, "inventario", producto.id), producto);
                             success++;
                         } catch(errRow) {
@@ -3132,7 +3588,6 @@
                         if (progressEl && progressEl.parentNode) progressEl.parentNode.removeChild(progressEl);
                     }, 1800);
 
-                    // recargar inventario admin para actualizar vista
                     window.cargarInventarioAdminFirebase(true);
                     alert(`Carga finalizada.\nÉxitos: ${success}\nErrores: ${errors}`);
                 } catch(readErr) {
@@ -3143,35 +3598,30 @@
             reader.readAsArrayBuffer(file);
         };
 
-        // -------------- NUEVA FUNCIÓN: interacciones de zoom/pan en modal --------------
         window.setupModalImageInteractions = () => {
             const zoomContainer = document.getElementById('zoom-container');
             const img = document.getElementById('modal-main-img');
             if(!zoomContainer || !img) return;
 
-            // Iniciar datos
             if(!img.dataset.scale) img.dataset.scale = 1;
             if(!img.dataset.panX) img.dataset.panX = 0;
             if(!img.dataset.panY) img.dataset.panY = 0;
 
-            // Rueda para hacer zoom (Ctrl / wheel para más control)
             const onWheel = (e) => {
                 if (!img) return;
-                // No interferir si hay touches
                 if (e.ctrlKey || e.deltaY) {
                     e.preventDefault();
                     const delta = -e.deltaY || e.wheelDelta || -e.detail;
                     let scale = parseFloat(img.dataset.scale || 1);
                     if (delta > 0) scale *= 1.08;
                     else scale /= 1.08;
-                    scale = Math.min(Math.max(1, scale), 3); // rango 1..3
+                    scale = Math.min(Math.max(1, scale), 3);
                     img.dataset.scale = scale;
                     img.style.transform = `scale(${scale}) translate(${img.dataset.panX}px, ${img.dataset.panY}px)`;
                     if (scale > 1) img.classList.add('zoomed'); else img.classList.remove('zoomed');
                 }
             };
 
-            // Doble-clic para alternar zoom 1 <-> 2
             const onDblClick = (e) => {
                 if (!img) return;
                 let scale = parseFloat(img.dataset.scale || 1);
@@ -3186,7 +3636,6 @@
                 if (scale > 1) img.classList.add('zoomed'); else img.classList.remove('zoomed');
             };
 
-            // Arrastrar para pan cuando está zoomed
             let dragging = false;
             let startX = 0, startY = 0;
             const onPointerDown = (e) => {
@@ -3218,7 +3667,6 @@
                 zoomContainer.releasePointerCapture && zoomContainer.releasePointerCapture(e.pointerId);
             };
 
-            // Swipe detection cuando no está zoomed (para cambiar imagen)
             let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
             const onTouchStart = (e) => {
                 if (!e.touches || e.touches.length === 0) return;
@@ -3233,10 +3681,8 @@
                 const dx = touchEndX - touchStartX;
                 const dy = touchEndY - touchStartY;
                 const dt = Date.now() - touchStartTime;
-                // simple swipe: horizontal, suficiente distancia y no vertical dominando
-                const threshold = 40; // px
+                const threshold = 40;
                 if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy) && dt < 500) {
-                    // si no está zoomed -> cambiar imagen, si está zoomed -> pan en vez
                     const scale = parseFloat(img.dataset.scale || 1);
                     if (scale <= 1.05) {
                         if (dx > 0) window.cambiarImagen(-1);
@@ -3246,7 +3692,6 @@
                 touchStartTime = 0;
             };
 
-            // Removemos listeners previos para no duplicar
             zoomContainer.removeEventListener('wheel', zoomContainer._wheelFn);
             zoomContainer.removeEventListener('dblclick', zoomContainer._dblFn);
             zoomContainer.removeEventListener('pointerdown', zoomContainer._pdownFn);
@@ -3255,7 +3700,6 @@
             zoomContainer.removeEventListener('touchstart', zoomContainer._tstartFn);
             zoomContainer.removeEventListener('touchend', zoomContainer._tendFn);
 
-            // Guardamos referencias para poder removerlos la próxima vez
             zoomContainer._wheelFn = onWheel;
             zoomContainer._dblFn = onDblClick;
             zoomContainer._pdownFn = onPointerDown;
@@ -3273,13 +3717,14 @@
             zoomContainer.addEventListener('touchend', zoomContainer._tendFn, { passive: true });
         };
 
-        // Inicializaciones al cargar la página
         (async () => {
             await window.cargarSiteConfig();
             await window.cargarMarcas();
-            // ensure opinions, trabajos, and initial inventory are loaded
             await window.cargarTrabajos();
             window.cargarOpinionesPublicas();
+
+            window.categoriaCatalogoActiva = 'todos';
+            window.actualizarBotonesCategoria('todos');
         })();
 
     </script>
