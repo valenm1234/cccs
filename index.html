@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cauchos Caracas</title>
 
-    <link id="site-favicon" rel="icon" href="https://via.placeholder.com/32">
+   <link id="site-favicon" rel="icon" type="image/png" href="./logito.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -1321,9 +1321,8 @@
                 } else {
                     logoEl.src = 'logito.png';
                 }
-                if(window.siteConfig.favicon) faviconLink.href = window.siteConfig.favicon;
-                else faviconLink.href = window.siteConfig.logoUrl || 'logito.png';
-
+               faviconLink.href = './logito.png';
+                
                 if(window.siteConfig.visitanosBg) visitanos.style.backgroundImage = `url('${window.siteConfig.visitanosBg}')`;
                 else visitanos.style.backgroundImage = `url('ubicacion.png')`;
 
